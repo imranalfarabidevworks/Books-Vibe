@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams, useLoaderData } from 'react-router-dom'
 
 function BookDetails() {
   const { bookId:bookParamsId} = useParams()
-  console.log(typeof bookParamsId, 'bookParamsId')
+  //console.log(typeof bookParamsId, 'bookParamsId')
 
   const books = useLoaderData()
-  console.log(books, 'books')
+  //console.log(books, 'books')
 
   const expectedBook = books.find(
     book => book.bookId === Number(bookParamsId)
   )
 
-  console.log(expectedBook, 'expectedBook')
+  //console.log(expectedBook, 'expectedBook')
 
   if (!expectedBook) {
     return <h2 className="text-center text-2xl mt-10">Book Not Found</h2>
@@ -31,6 +31,30 @@ function BookDetails() {
     publisher,
     yearOfPublishing,
   } = expectedBook
+
+// book store
+const [storedBook,setStoredBook]= useState([])
+
+const  handleMarkAsRead=(currentBook)=>{
+  // step 1: store book index
+  //step 2: where to store
+  //step 2: array or collection
+  //step 3: if the book is already axist then show a alart or toast
+  // step 4:if not then add the book in the array or collection
+  
+  const  isExistBook=storedBook.find((book)=> book.bookId===currentBook.bookId)
+  if(isExistBook){
+    alert ('The Book Is Already Exist')
+}
+else{
+  setStoredBook([...storedBook,currentBook])
+}
+console.log(currentBook,isExistBook)
+
+}
+
+
+
 
   return (
     <div className="grid grid-cols-2  bg-base-100 shadow-sm p-6 gap-6 container mx-auto ">
@@ -68,8 +92,8 @@ function BookDetails() {
           <span> {yearOfPublishing}</span>
         </div>
         <div className="flex items-center gap-2">
-<button className="btn">Read</button>
-<button className="btn btn-primary">wishList</button>
+<button className="btn" onClick={()=> handleMarkAsRead(expectedBook)}>Mark as Read</button>
+<button className="btn btn-primary">Add to wishList</button>
         </div>
     </div>
   </div>
