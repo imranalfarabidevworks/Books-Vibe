@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useContext, } from 'react'
 import { useParams, useLoaderData } from 'react-router-dom'
+import  { BookContext } from '../../context/BookProvider' 
 
 function BookDetails() {
-  const { bookId:bookParamsId} = useParams()
+  const {bookId:bookParamsId} = useParams()
   //console.log(typeof bookParamsId, 'bookParamsId')
 
   const books = useLoaderData()
   //console.log(books, 'books')
 
   const expectedBook = books.find(
-    book => book.bookId === Number(bookParamsId)
+    book => book.bookId ==(bookParamsId)
   )
 
   //console.log(expectedBook, 'expectedBook')
@@ -30,30 +31,11 @@ function BookDetails() {
     tags,
     publisher,
     yearOfPublishing,
-  } = expectedBook
-
-// book store
-const [storedBook,setStoredBook]= useState([])
-
-const  handleMarkAsRead=(currentBook)=>{
-  // step 1: store book index
-  //step 2: where to store
-  //step 2: array or collection
-  //step 3: if the book is already axist then show a alart or toast
-  // step 4:if not then add the book in the array or collection
-  
-  const  isExistBook=storedBook.find((book)=> book.bookId===currentBook.bookId)
-  if(isExistBook){
-    alert ('The Book Is Already Exist')
-}
-else{
-  setStoredBook([...storedBook,currentBook])
-}
-console.log(currentBook,isExistBook)
-
-}
+  } = expectedBook;
 
 
+
+const {handleMarkAsRead,handleWishList}= useContext(BookContext);
 
 
   return (
@@ -93,7 +75,7 @@ console.log(currentBook,isExistBook)
         </div>
         <div className="flex items-center gap-2">
 <button className="btn" onClick={()=> handleMarkAsRead(expectedBook)}>Mark as Read</button>
-<button className="btn btn-primary">Add to wishList</button>
+<button className="btn btn-primary" onClick={()=> handleWishList(expectedBook)}>Add to wishList</button>
         </div>
     </div>
   </div>
@@ -102,5 +84,6 @@ console.log(currentBook,isExistBook)
     
   )
 }
+
 
 export default BookDetails
